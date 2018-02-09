@@ -1,5 +1,7 @@
 #include <Arduino.h>
 #include <packetHandler.hpp>
+#include <dynamixelFunc.h>
+
 #define UART_TXRTSE (2)
 #define UART_TXRTSPOL (4)
 #define BAUD_RATE 1000000
@@ -35,8 +37,9 @@ void setup() {
 void loop() {
     // put your main code here, to run repeatedly:
         //code
-    if ((Serial.available())&&(1))
+    if ((Serial.available())&&(starts == 1))
     {
+        /*
         std::vector <unsigned char> test;
         test.push_back(0x18);
         test.push_back(0x01);
@@ -66,8 +69,8 @@ void loop() {
         }
         std::vector <unsigned char> test3;
         test3.push_back(0x1E);
-        test3.push_back(0xC4);
-        test3.push_back(0x09);
+        test3.push_back(0x00);
+        test3.push_back(0x08);
         vgg = new DynamixelPacket(0xFE,0x03,test3);
         vgg -> transaction();
         delay(500);
@@ -77,6 +80,23 @@ void loop() {
             Serial.printf("%x ",Serial2.read());
         }
         Serial.flush();
+        */
+        
+        int each_length = 3;
+        uint8_t id[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18};
+        unsigned short size_id = 18;
+        uint8_t addre = 0x1E;
+        uint8_t data[] = {0x00,0x08,0x00,0x08,0x00,0x08,0x00,0x08,0x00,0x08,0x00,0x08,0x00,0x08,0x00,0x08,0x00,0x08,0x00,0x08,0x00,0x08,0x00,0x08,0x00,0x08,0x00,0x08,0x00,0x08,0x00,0x08,0x00,0x08,0x00,0x08,0x00,0x08};
+        
+        delay(200);
+        starts = 0;
+        uint8_t addre1 = 0x18;
+        uint8_t data2[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+        syncWrite(id,size_id,data2,2,addre1);
+        delay(200);
+        syncWrite(id,size_id,data,each_length,addre);
+        delay(200);
+        
     }
 }
 
